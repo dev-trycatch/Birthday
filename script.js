@@ -2,7 +2,6 @@
  * Birthday page — Mohnish Sir
  * Vanilla JS: landing, envelope, card, typewriter, music, confetti
  */
-
 (function () {
   'use strict';
 
