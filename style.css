@@ -1,0 +1,584 @@
+/* ============================================
+   Birthday Page — Mohnish Sir
+   HTML, CSS, vanilla JS — mobile responsive
+   ============================================ */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: clamp(15px, 2.8vw, 18px);
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  min-height: 100vh;
+  overflow-x: hidden;
+  font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+  color: #fff;
+  position: relative;
+}
+
+/* --- Night sky background --- */
+.night-sky {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(ellipse 120% 90% at 50% 0%, #1a0a2e 0%, transparent 55%),
+    radial-gradient(ellipse 90% 50% at 85% 25%, #16213e 0%, transparent 45%),
+    radial-gradient(ellipse 70% 60% at 15% 70%, #0f3460 0%, transparent 45%),
+    radial-gradient(ellipse 100% 100% at 50% 100%, #0a0a1a 0%, #050508 100%);
+  background-color: #0a0a12;
+}
+
+/* ========== LANDING SCREEN ========== */
+.landing {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  background: transparent;
+  transition: opacity 0.6s ease, visibility 0.6s ease;
+}
+
+.landing.hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.landing-inner {
+  text-align: center;
+}
+
+.landing-subtitle {
+  font-size: 0.95rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  opacity: 0.9;
+  margin-bottom: 1.5rem;
+}
+
+.btn-open {
+  padding: 1rem 2.5rem;
+  font-size: 1.15rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  color: #1a0a2e;
+  background: linear-gradient(145deg, #ffeaa7, #fdcb6e);
+  border: none;
+  border-radius: 999px;
+  cursor: pointer;
+  box-shadow: 0 8px 24px rgba(253, 203, 110, 0.4);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.btn-open:hover {
+  transform: scale(1.05);
+  box-shadow: 0 12px 32px rgba(253, 203, 110, 0.5);
+}
+
+.btn-open:active {
+  transform: scale(0.98);
+}
+
+/* ========== SCENES (envelope + card) ========== */
+.scene {
+  position: fixed;
+  inset: 0;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+
+.scene.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* ========== ENVELOPE ========== */
+.envelope-scene {
+  pointer-events: none;
+}
+
+.envelope-scene.active {
+  pointer-events: auto;
+}
+
+.envelope-wrapper {
+  perspective: 900px;
+}
+
+.envelope {
+  position: relative;
+  width: min(280px, 82vw);
+  height: min(185px, 54vw);
+  cursor: pointer;
+  transform-style: preserve-3d;
+}
+
+.envelope-body {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 84%;
+  background: linear-gradient(145deg, #e8d5c4 0%, #d4b896 50%, #c9a87c 100%);
+  border-radius: 0 0 8px 8px;
+  box-shadow:
+    inset 0 2px 4px rgba(255,255,255,0.4),
+    inset 0 -2px 8px rgba(0,0,0,0.12),
+    0 10px 28px rgba(0,0,0,0.35);
+}
+
+.envelope-body::before,
+.envelope-body::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-bottom-width: 0;
+}
+
+.envelope-body::before {
+  left: 0;
+  border-left: min(140px, 41vw) solid transparent;
+  border-right: min(140px, 41vw) solid transparent;
+  border-top: min(122px, 36vw) solid #dcc8b0;
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
+  filter: brightness(0.92);
+}
+
+.envelope-body::after {
+  left: 50%;
+  transform: translateX(-50%);
+  border-left: min(140px, 41vw) solid rgba(0,0,0,0.06);
+  border-right: min(140px, 41vw) solid rgba(255,255,255,0.06);
+  border-top: min(122px, 36vw) solid transparent;
+}
+
+.envelope-flap {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 54%;
+  transform-origin: top center;
+  transform: rotateX(0deg);
+  transition: transform 0.95s cubic-bezier(0.34, 1.56, 0.64, 1);
+  z-index: 2;
+}
+
+.envelope-flap::before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  border-left: min(140px, 41vw) solid transparent;
+  border-right: min(140px, 41vw) solid transparent;
+  border-bottom: min(100px, 29vw) solid #e8d5c4;
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.2);
+}
+
+.envelope.open .envelope-flap {
+  transform: rotateX(-165deg);
+}
+
+.envelope-letter {
+  position: absolute;
+  bottom: 10%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 86%;
+  height: 68%;
+  background: linear-gradient(180deg, #faf6f0 0%, #f0ebe0 100%);
+  border-radius: 6px;
+  box-shadow: 0 -2px 14px rgba(0,0,0,0.12);
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  transition: transform 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) 0.2s;
+  transform: translateX(-50%) translateY(0) scale(0.97);
+}
+
+.envelope.open .envelope-letter {
+  transform: translateX(-50%) translateY(-45%) scale(1);
+}
+
+.letter-inner {
+  text-align: center;
+  color: #2c1810;
+}
+
+.letter-hint {
+  font-size: 0.9rem;
+  opacity: 0.85;
+}
+
+/* ========== BIRTHDAY CARD ========== */
+.card-scene {
+  align-items: center;
+  justify-content: center;
+  overflow-y: auto;
+}
+
+.birthday-card {
+  width: 100%;
+  max-width: 420px;
+  padding: 1.75rem 1.5rem;
+  margin: auto;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 20px;
+  box-shadow:
+    0 12px 40px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.card-header {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.card-title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  margin-bottom: 0.25rem;
+}
+
+.card-name {
+  font-size: 1.25rem;
+  font-weight: 600;
+  opacity: 0.95;
+  color: #fdcb6e;
+}
+
+/* Typewriter block — line by line */
+.typewriter-block {
+  min-height: 7em;
+  margin-bottom: 1.5rem;
+  position: relative;
+}
+
+.typewriter-line {
+  font-size: 1rem;
+  line-height: 1.7;
+  min-height: 1.7em;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.typewriter-line.visible {
+  opacity: 1;
+}
+
+.typewriter-line .char {
+  opacity: 0;
+}
+
+.typewriter-line.visible .char {
+  opacity: 1;
+}
+
+.typewriter-cursor {
+  display: inline-block;
+  font-weight: 300;
+  color: #fdcb6e;
+  animation: cursor-blink 0.8s step-end infinite;
+  margin-left: 2px;
+}
+
+.typewriter-cursor.hidden {
+  display: none;
+}
+
+@keyframes cursor-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+/* Photo section */
+.photo-section {
+  margin-bottom: 1.5rem;
+}
+
+.photo-title {
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  opacity: 0.85;
+  margin-bottom: 0.75rem;
+  text-align: center;
+}
+
+.photo-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
+}
+
+.photo-wrap {
+  aspect-ratio: 1;
+  border-radius: 12px;
+  overflow: hidden;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.08);
+}
+
+.card-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.card-signature {
+  text-align: center;
+  font-size: 0.9rem;
+  opacity: 0.8;
+  font-style: italic;
+}
+
+/* ========== FLOATING BALLOONS ========== */
+.balloons {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.balloon {
+  position: absolute;
+  width: 42px;
+  height: 54px;
+  border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+  bottom: -70px;
+  opacity: 0.88;
+  filter: drop-shadow(2px 4px 8px rgba(0,0,0,0.25));
+}
+
+.balloon::after {
+  content: "";
+  position: absolute;
+  bottom: -14px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 2px;
+  height: 16px;
+  background: linear-gradient(180deg, rgba(0,0,0,0.2) 0%, transparent 100%);
+  border-radius: 1px;
+}
+
+.balloon-1 { left: 6%;   background: linear-gradient(135deg, #ff6b9d, #c44569); animation: balloon-float 15s ease-in-out 0s infinite; }
+.balloon-2 { left: 16%;  background: linear-gradient(135deg, #74b9ff, #0984e3); animation: balloon-float 17s ease-in-out 1.5s infinite; }
+.balloon-3 { left: 26%;  background: linear-gradient(135deg, #ffeaa7, #fdcb6e); animation: balloon-float 14s ease-in-out 0.5s infinite; }
+.balloon-4 { left: 40%;  background: linear-gradient(135deg, #a29bfe, #6c5ce7); animation: balloon-float 16s ease-in-out 2s infinite; }
+.balloon-5 { left: 54%;  background: linear-gradient(135deg, #fd79a8, #e84393); animation: balloon-float 18s ease-in-out 0.2s infinite; }
+.balloon-6 { left: 66%;  background: linear-gradient(135deg, #81ecec, #00cec9); animation: balloon-float 15s ease-in-out 1.2s infinite; }
+.balloon-7 { left: 78%;  background: linear-gradient(135deg, #fab1a0, #e17055); animation: balloon-float 16s ease-in-out 0.8s infinite; }
+.balloon-8 { left: 90%;  background: linear-gradient(135deg, #dfe6e9, #b2bec3); animation: balloon-float 14s ease-in-out 1.8s infinite; }
+
+@keyframes balloon-float {
+  0% {
+    transform: translateY(0) translateX(0) rotate(-2deg);
+    opacity: 0;
+  }
+  8% { opacity: 0.88; }
+  25% { transform: translateY(-28vh) translateX(6px) rotate(2deg); }
+  50% { transform: translateY(-55vh) translateX(-5px) rotate(-1deg); }
+  75% { transform: translateY(-82vh) translateX(4px) rotate(1deg); }
+  92% { opacity: 0.88; }
+  100% {
+    transform: translateY(-110vh) translateX(0) rotate(-2deg);
+    opacity: 0;
+  }
+}
+
+/* ========== CONFETTI ========== */
+.confetti-container {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+  overflow: hidden;
+}
+
+.confetti-piece {
+  position: absolute;
+  width: 10px;
+  height: 6px;
+  border-radius: 2px;
+  top: -15px;
+  opacity: 0;
+  animation: confetti-fall 4s ease-out forwards;
+}
+
+@keyframes confetti-fall {
+  0% {
+    opacity: 0;
+    transform: translateY(-5px) rotate(0deg);
+  }
+  5% { opacity: 1; }
+  95% { opacity: 0.9; }
+  100% {
+    opacity: 0;
+    transform: translateY(100vh) rotate(720deg);
+  }
+}
+
+/* ========== MUSIC BUTTON ========== */
+.btn-music {
+  position: fixed;
+  bottom: 1.25rem;
+  right: 1.25rem;
+  z-index: 20;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 2px solid rgba(255,255,255,0.25);
+  background: rgba(0,0,0,0.35);
+  backdrop-filter: blur(8px);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.25s ease, border-color 0.25s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.btn-music:hover {
+  background: rgba(0,0,0,0.5);
+  border-color: rgba(255,255,255,0.4);
+}
+
+.btn-music.muted .icon-music::before {
+  content: "🔇";
+}
+
+.btn-music:not(.muted) .icon-music::before {
+  content: "🔊";
+}
+
+.icon-music {
+  font-size: 1.4rem;
+  line-height: 1;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ========== RESPONSIVE ========== */
+@media (max-width: 480px) {
+  .landing-subtitle {
+    font-size: 0.85rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .btn-open {
+    padding: 0.9rem 2rem;
+    font-size: 1.05rem;
+  }
+
+  .birthday-card {
+    padding: 1.4rem 1.2rem;
+    max-width: 100%;
+  }
+
+  .card-title {
+    font-size: 1.4rem;
+  }
+
+  .card-name {
+    font-size: 1.1rem;
+  }
+
+  .typewriter-line {
+    font-size: 0.95rem;
+  }
+
+  .photo-grid {
+    gap: 0.4rem;
+  }
+
+  .balloon {
+    width: 34px;
+    height: 44px;
+  }
+
+  .balloon-1 { left: 0; }
+  .balloon-2 { left: 12%; }
+  .balloon-3 { left: 24%; }
+  .balloon-4 { left: 36%; }
+  .balloon-5 { left: 50%; }
+  .balloon-6 { left: 64%; }
+  .balloon-7 { left: 78%; }
+  .balloon-8 { left: 90%; }
+
+  .btn-music {
+    width: 44px;
+    height: 44px;
+    bottom: 1rem;
+    right: 1rem;
+  }
+}
+
+@media (min-width: 769px) {
+  .birthday-card {
+    max-width: 440px;
+    padding: 2rem 1.75rem;
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.05s !important;
+  }
+
+  .envelope.open .envelope-flap {
+    transform: rotateX(-165deg);
+  }
+
+  .typewriter-cursor {
+    animation: none;
+    opacity: 1;
+  }
+}

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Happy Birthday Mohnish Sir</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="night-sky" aria-hidden="true"></div>
+
+  <!-- Floating balloons (always in background) -->
+  <div class="balloons" aria-hidden="true">
+    <div class="balloon balloon-1"></div>
+    <div class="balloon balloon-2"></div>
+    <div class="balloon balloon-3"></div>
+    <div class="balloon balloon-4"></div>
+    <div class="balloon balloon-5"></div>
+    <div class="balloon balloon-6"></div>
+    <div class="balloon balloon-7"></div>
+    <div class="balloon balloon-8"></div>
+  </div>
+
+  <!-- Confetti -->
+  <div class="confetti-container" id="confetti" aria-hidden="true"></div>
+
+  <!-- Background music -->
+  <audio id="bg-music" loop>
+    <source src="audio/birthday.mp3" type="audio/mpeg">
+    <source src="audio/birthday.ogg" type="audio/ogg">
+  </audio>
+
+  <!-- ========== LANDING SCREEN ========== -->
+  <section class="landing" id="landing">
+    <div class="landing-inner">
+      <p class="landing-subtitle">A special wish for you</p>
+      <button type="button" class="btn-open" id="btn-open" aria-label="Open birthday card">
+        Tap to Open
+      </button>
+    </div>
+  </section>
+
+  <!-- ========== ENVELOPE SCENE ========== -->
+  <section class="scene envelope-scene" id="envelope-scene">
+    <div class="envelope-wrapper">
+      <div class="envelope" id="envelope">
+        <div class="envelope-flap"></div>
+        <div class="envelope-body"></div>
+        <div class="envelope-letter">
+          <div class="letter-inner">
+            <p class="letter-hint">Open the card below ↓</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== BIRTHDAY CARD ========== -->
+  <section class="scene card-scene" id="card-scene">
+    <div class="birthday-card">
+      <header class="card-header">
+        <h1 class="card-title">Happy Birthday</h1>
+        <p class="card-name">Mohnish Sir</p>
+      </header>
+
+      <div class="typewriter-block">
+        <p class="typewriter-line" id="line1"></p>
+        <p class="typewriter-line" id="line2"></p>
+        <p class="typewriter-line" id="line3"></p>
+        <p class="typewriter-line" id="line4"></p>
+        <span class="typewriter-cursor" aria-hidden="true">|</span>
+      </div>
+
+      <div class="photo-section">
+        <h2 class="photo-title">Memories</h2>
+        <div class="photo-grid">
+          <div class="photo-wrap">
+            <img src="images/bday1.jpeg" alt="Memory 1" class="card-photo" onerror="this.src='images/placeholder.svg'; this.alt='Photo 1';">
+          </div>
+          <div class="photo-wrap">
+            <img src="images/bday2.jpeg" alt="Memory 2" class="card-photo" onerror="this.src='images/placeholder.svg'; this.alt='Photo 2';">
+          </div>
+          <div class="photo-wrap">
+            <img src="images/bday3.jpeg" alt="Memory 3" class="card-photo" onerror="this.src='images/placeholder.svg'; this.alt='Photo 3';">
+          </div>
+        </div>
+      </div>
+
+      <p class="card-signature">With best wishes</p>
+    </div>
+  </section>
+
+  <!-- Mute / Unmute -->
+  <button type="button" class="btn-music" id="btn-music" aria-label="Toggle music">
+    <span class="icon-music" aria-hidden="true"></span>
+    <span class="sr-only">Toggle music</span>
+  </button>
+
+  <script src="script.js"></script>
+</body>
+</html>
