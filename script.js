@@ -16,12 +16,10 @@
   var confettiContainer = document.getElementById('confetti');
 
   var typewriterLines = [
-    'Wishing you a very Happy Birthday, Mohnish Sir!',
-    'Thank you for being an amazing teacher and guide.',
+    'Wishing you a very Happy Birthday, Mohnish Sir!🥳🎂',
     'May this year bring you joy, health and success.',
     'Cheers to many more wonderful years!'
   ];
-
   var lineIds = ['line1', 'line2', 'line3', 'line4'];
 
   /**
